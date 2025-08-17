@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Nhân khẩu - Khu phố 25</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root[data-theme='light'] {
+            --bg-color: #e9ecef;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --muted-text-color: #6c757d;
+            --border-color: #dee2e6;
+            --navbar-bg: #343a40;
+        }
+        :root[data-theme='dark'] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --muted-text-color: rgba(255, 255, 255, 0.6);
+            --border-color: #333;
+            --navbar-bg: #000000;
+        }
+        body, .card, .navbar, .form-control, .page-link, .table {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .navbar { background-color: var(--navbar-bg); }
+        .table { color: var(--text-color); }
+        [data-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > * {
+            --bs-table-accent-bg: rgba(255, 255, 255, 0.05);
+        }
+        [data-theme='dark'] .table-hover > tbody > tr:hover > * {
+            --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+        }
+        [data-theme='dark'] .pagination .page-link {
+            background-color: var(--card-bg);
+            color: var(--heading-color);
+            border-color: var(--border-color);
+        }
+        [data-theme='dark'] .pagination .page-item.disabled .page-link {
+            background-color: #2a2a2a;
+            color: #6c757d;
+        }
+        .theme-switch-wrapper { display: flex; align-items: center; position: fixed; top: 15px; right: 20px; z-index: 1030; }
+        .theme-switch { display: inline-block; height: 34px; position: relative; width: 60px; }
+        .theme-switch input { display: none; }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 26px; left: 4px; position: absolute; transition: .4s; width: 26px; }
+        input:checked + .slider { background-color: #82c0ff; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .slider.round { border-radius: 34px; }
+        .slider.round:before { border-radius: 50%; }
+        .theme-switch-wrapper i { margin-left: 10px; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox"><input type="checkbox" id="checkbox" /><div class="slider round"></div></label>
+        <i class="fa-solid fa-moon"></i>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: var(--navbar-bg);">
+    <div class="container">
+        <a class="navbar-brand" href="/"><strong>KHU PHỐ 25</strong></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-navbar">
+            <ul class="navbar-nav ms-auto">
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/thong-bao/' %}active{% endif %}" href="/thong-bao/">Bảng Tin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/bieu-mau/' %}active{% endif %}" href="/bieu-mau/">Biểu Mẫu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/bao-cao/' %}active{% endif %}" href="/bao-cao/">Báo Cáo</a>
+                </li>
+                
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                         <a class="nav-link {% if '/danh-ba/' in request.path %}active{% endif %}" href="/danh-ba/">Danh Bạ</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Chào, {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/danh-ba/nhan-khau/">DS Nhân Khẩu</a></li>
+                            <li><a class="dropdown-item" href="/admin/">Trang Quản trị</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gop-y/">Gửi Phản Ánh</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white ms-2 px-3" href="{% url 'login' %}">
+                            <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <main class="container my-4">
+        <h1 class="text-center mb-4">Danh Sách Toàn Bộ Nhân Khẩu</h1>
+        
+        <div class="card p-3 shadow-sm" style="background-color: var(--card-bg);">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Họ và Tên</th>
+                            <th scope="col">Quan hệ CH</th>
+                            <th scope="col">Ngày sinh</th>
+                            <th scope="col">Tình trạng</th>
+                            <th scope="col">Số CCCD</th>
+                            <th scope="col">Công việc</th>
+                            <th scope="col">Nơi ở hiện nay</th>
+                            <th scope="col">Thuộc hộ dân</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nhankhau in page_obj %}
+                        <tr>
+                            <th scope="row">{{ page_obj.start_index|add:forloop.counter0 }}</th>
+                            <td>{{ nhankhau.ho_va_ten }}</td>
+                            <td>{{ nhankhau.get_quan_he_chu_ho_display }}</td>
+                            <td>{{ nhankhau.ngay_sinh|date:"d/m/Y"|default:"-" }}</td>
+                            <td>{{ nhankhau.get_tinh_trang_display }}</td>
+                            <td>{{ nhankhau.so_cccd|default_if_none:"-" }}</td>
+                            <td>{{ nhankhau.cong_viec_hien_nay|default_if_none:"-" }}</td>
+                            <td>{{ nhankhau.noi_o_hien_nay|default_if_none:"-" }}</td>
+                            
+                            <td>
+                                {% if nhankhau.ho_dan.chu_ho %}
+                                    Hộ ông/bà {{ nhankhau.ho_dan.chu_ho.ho_va_ten }} - Số nhà {{ nhankhau.ho_dan.so_nha }}
+                                {% else %}
+                                    Hộ chưa có chủ hộ - Số nhà {{ nhankhau.ho_dan.so_nha }}
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="text-center">Chưa có dữ liệu nhân khẩu.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; Đầu</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Trước</a></li>
+                {% endif %}
+
+                <li class="page-item disabled"><span class="page-link">Trang {{ page_obj.number }} của {{ page_obj.paginator.num_pages }}</span></li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Sau</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Cuối &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </main>
+
+    <script>
+        const toggleSwitch = document.querySelector('#checkbox'); const currentTheme = localStorage.getItem('theme'); const sunIcon = '<i class="fa-solid fa-sun"></i>'; const moonIcon = '<i class="fa-solid fa-moon"></i>'; const iconContainer = document.querySelector('.theme-switch-wrapper i'); function setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); if (theme === 'dark') { toggleSwitch.checked = true; iconContainer.innerHTML = sunIcon; } else { toggleSwitch.checked = false; iconContainer.innerHTML = moonIcon; } } if (currentTheme) { setTheme(currentTheme); } toggleSwitch.addEventListener('change', function(e) { if (e.target.checked) { setTheme('dark'); } else { setTheme('light'); } });
+    </script>
+</body>
+</html>

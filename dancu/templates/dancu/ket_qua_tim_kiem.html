@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả tìm kiếm - Khu phố 25</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root[data-theme='light'] {
+            --bg-color: #e9ecef;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --muted-text-color: #6c757d;
+            --border-color: #dee2e6;
+            --navbar-bg: #343a40;
+        }
+        :root[data-theme='dark'] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --muted-text-color: rgba(255, 255, 255, 0.6);
+            --border-color: #333;
+            --navbar-bg: #000000;
+        }
+        body, .card, .navbar, .form-control, .page-link, .table {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .navbar { background-color: var(--navbar-bg); }
+        .table { color: var(--text-color); }
+        .card { background-color: var(--card-bg); border-color: var(--border-color); }
+        [data-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > * {
+            --bs-table-accent-bg: rgba(255, 255, 255, 0.05);
+        }
+        [data-theme='dark'] .table-hover > tbody > tr:hover > * {
+            --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+        }
+        .theme-switch-wrapper { display: flex; align-items: center; position: fixed; top: 15px; right: 20px; z-index: 1030; }
+        .theme-switch { display: inline-block; height: 34px; position: relative; width: 60px; }
+        .theme-switch input { display: none; }
+        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; }
+        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 26px; left: 4px; position: absolute; transition: .4s; width: 26px; }
+        input:checked + .slider { background-color: #82c0ff; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .slider.round { border-radius: 34px; }
+        .slider.round:before { border-radius: 50%; }
+        .theme-switch-wrapper i { margin-left: 10px; color: #fff; }
+
+        /* --- CSS ĐẶC BIỆT CHO VIỆC IN ẤN --- */
+        @media print {
+            body * {
+                visibility: hidden; /* Mặc định ẩn tất cả mọi thứ */
+            }
+            .printable-area, .printable-area * {
+                visibility: visible; /* Chỉ hiện thị khu vực được phép in */
+            }
+            .printable-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .table {
+                color: #000 !important; /* Đảm bảo chữ màu đen khi in */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox"><input type="checkbox" id="checkbox" /><div class="slider round"></div></label>
+        <i class="fa-solid fa-moon"></i>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#"><strong>KHU PHỐ 25</strong></a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/thong-bao/">Bảng Tin</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/danh-ba/">Danh Bạ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/danh-ba/nhan-khau/">Danh Sách Nhân Khẩu</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <div class="card p-4 shadow-sm">
+            {% if ket_qua %}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        {% if search_type == 'hodan' %}
+                            <h3 class="mb-0">Kết quả tìm kiếm Hộ dân cho: "{{ query_hodan }}"</h3>
+                        {% elif search_type == 'nhankhau' %}
+                            <h3 class="mb-0">Kết quả tìm kiếm Nhân khẩu cho: "{{ query_nhankhau }}"</h3>
+                        {% endif %}
+                    </div>
+                    <button class="btn btn-secondary" onclick="window.print()">
+                        <i class="fa-solid fa-print"></i> In kết quả
+                    </button>
+                </div>
+
+                <div class="printable-area">
+                    {% if search_type == 'hodan' %}
+                        {% for hodan in ket_qua %}
+                            <div class="table-responsive mb-4">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th colspan="2">Thông tin Hộ: {{ hodan.chu_ho.ho_va_ten|default:"Chưa cập nhật" }} - Số nhà: {{ hodan.so_nha }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr> <td><strong>Khu vực</strong></td> <td>{{ hodan.khu_vuc }}</td> </tr>
+                                        <tr> <td><strong>Địa chỉ cụ thể</strong></td> <td>{{ hodan.dia_chi_cu_the }}</td> </tr>
+                                        <tr> <td><strong>Thành viên</strong></td>
+                                            <td>
+                                                {% for thanh_vien in hodan.nhankhau_set.all %}
+                                                    {{ thanh_vien.ho_va_ten }} ({{ thanh_vien.get_quan_he_chu_ho_display }})<br>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
+                    {% elif search_type == 'nhankhau' %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Họ và Tên</th> <th scope="col">Ngày sinh</th>
+                                        <th scope="col">Tình trạng</th> <th scope="col">Thuộc hộ dân</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for nhankhau in ket_qua %}
+                                    <tr>
+                                        <td>{{ nhankhau.ho_va_ten }}</td>
+                                        <td>{{ nhankhau.ngay_sinh|date:"d/m/Y"|default:"-" }}</td>
+                                        <td>{{ nhankhau.get_tinh_trang_display }}</td>
+                                        <td>Hộ {{ nhankhau.ho_dan.chu_ho.ho_va_ten|default_if_none:"-" }} - S.nhà {{ nhankhau.ho_dan.so_nha }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="text-center p-5">
+                    <h3 class="text-danger">Không tìm thấy kết quả</h3>
+                    <p class="text-muted">Không có dữ liệu nào phù hợp với từ khóa tìm kiếm của bạn.</p>
+                    <a href="{% url 'danh_ba_dancu' %}" class="btn btn-primary">Quay lại trang tìm kiếm</a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+    <script>
+        const toggleSwitch = document.querySelector('#checkbox'); const currentTheme = localStorage.getItem('theme'); const sunIcon = '<i class="fa-solid fa-sun"></i>'; const moonIcon = '<i class="fa-solid fa-moon"></i>'; const iconContainer = document.querySelector('.theme-switch-wrapper i'); function setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); if (theme === 'dark') { toggleSwitch.checked = true; iconContainer.innerHTML = sunIcon; } else { toggleSwitch.checked = false; iconContainer.innerHTML = moonIcon; } } if (currentTheme) { setTheme(currentTheme); } toggleSwitch.addEventListener('change', function(e) { if (e.target.checked) { setTheme('dark'); } else { setTheme('light'); } });
+    </script>
+</body>
+</html>
