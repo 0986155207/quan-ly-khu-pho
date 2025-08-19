@@ -10,4 +10,5 @@ urlpatterns = [
 
     # Đường dẫn cho trang hiển thị kết quả tìm kiếm
     path('ket-qua/', views.ket_qua_tim_kiem, name='ket_qua_tim_kiem'),
+    path('ho-dan/<int:hodan_id>/', views.chi_tiet_ho_dan, name='chi_tiet_ho_dan'),
 ]

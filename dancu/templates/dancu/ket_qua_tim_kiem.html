@@ -28,7 +28,7 @@
             --border-color: #333;
             --navbar-bg: #000000;
         }
-        body, .card, .navbar, .form-control, .page-link, .table {
+        body, .card, .navbar, .table {
             transition: background-color 0.4s ease, color 0.4s ease;
         }
         body {
@@ -37,59 +37,30 @@
             color: var(--text-color);
         }
         .navbar { background-color: var(--navbar-bg); }
+        .card { background-color: var(--card-bg); border-color: var(--border-color); color: var(--text-color); }
         .table { color: var(--text-color); }
-        .card { background-color: var(--card-bg); border-color: var(--border-color); }
         [data-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > * {
             --bs-table-accent-bg: rgba(255, 255, 255, 0.05);
         }
-        [data-theme='dark'] .table-hover > tbody > tr:hover > * {
-            --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
-        }
-        .theme-switch-wrapper { display: flex; align-items: center; position: fixed; top: 15px; right: 20px; z-index: 1030; }
-        .theme-switch { display: inline-block; height: 34px; position: relative; width: 60px; }
-        .theme-switch input { display: none; }
-        .slider { background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; }
-        .slider:before { background-color: #fff; bottom: 4px; content: ""; height: 26px; left: 4px; position: absolute; transition: .4s; width: 26px; }
-        input:checked + .slider { background-color: #82c0ff; }
-        input:checked + .slider:before { transform: translateX(26px); }
-        .slider.round { border-radius: 34px; }
-        .slider.round:before { border-radius: 50%; }
-        .theme-switch-wrapper i { margin-left: 10px; color: #fff; }
+        .text-muted { color: var(--muted-text-color) !important; }
 
-        /* --- CSS ĐẶC BIỆT CHO VIỆC IN ẤN --- */
+        /* CSS ĐẶC BIỆT CHO VIỆC IN ẤN */
         @media print {
-            body * {
-                visibility: hidden; /* Mặc định ẩn tất cả mọi thứ */
-            }
-            .printable-area, .printable-area * {
-                visibility: visible; /* Chỉ hiện thị khu vực được phép in */
-            }
-            .printable-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .table {
-                color: #000 !important; /* Đảm bảo chữ màu đen khi in */
-            }
+            body * { visibility: hidden; }
+            .printable-area, .printable-area * { visibility: visible; }
+            .printable-area { position: absolute; left: 0; top: 0; width: 100%; }
+            .table { color: #000 !important; }
         }
     </style>
 </head>
 <body>
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="checkbox"><input type="checkbox" id="checkbox" /><div class="slider round"></div></label>
-        <i class="fa-solid fa-moon"></i>
-    </div>
-
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#"><strong>KHU PHỐ 25</strong></a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/thong-bao/">Bảng Tin</a></li>
                     <li class="nav-item"><a class="nav-link active" href="/danh-ba/">Danh Bạ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/danh-ba/nhan-khau/">Danh Sách Nhân Khẩu</a></li>
                 </ul>
             </div>
         </div>
@@ -118,7 +89,11 @@
                                 <table class="table table-bordered">
                                     <thead class="table-light">
                                         <tr>
-                                            <th colspan="2">Thông tin Hộ: {{ hodan.chu_ho.ho_va_ten|default:"Chưa cập nhật" }} - Số nhà: {{ hodan.so_nha }}</th>
+                                            <th colspan="2">
+                                                <a href="{% url 'chi_tiet_ho_dan' hodan.id %}" class="text-dark text-decoration-none">
+                                                    Thông tin Hộ: {{ hodan.chu_ho.ho_va_ten|default:"Chưa cập nhật" }} - Số nhà: {{ hodan.so_nha }}
+                                                </a>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -167,8 +142,5 @@
             {% endif %}
         </div>
     </main>
-    <script>
-        const toggleSwitch = document.querySelector('#checkbox'); const currentTheme = localStorage.getItem('theme'); const sunIcon = '<i class="fa-solid fa-sun"></i>'; const moonIcon = '<i class="fa-solid fa-moon"></i>'; const iconContainer = document.querySelector('.theme-switch-wrapper i'); function setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); if (theme === 'dark') { toggleSwitch.checked = true; iconContainer.innerHTML = sunIcon; } else { toggleSwitch.checked = false; iconContainer.innerHTML = moonIcon; } } if (currentTheme) { setTheme(currentTheme); } toggleSwitch.addEventListener('change', function(e) { if (e.target.checked) { setTheme('dark'); } else { setTheme('light'); } });
-    </script>
 </body>
 </html>

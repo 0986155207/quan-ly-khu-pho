@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'phananh',
     'bieumau', # Thêm app mới
     'baocao',
+    'chatbot',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = '/danh-ba/' # Sau khi đăng nhập, đưa tới trang Danh bạ
 LOGIN_URL = '/tai-khoan/login/'  # Đường dẫn tới trang đăng nhập
+# Chỉ định trang sẽ hiển thị sau khi người dùng đăng xuất
+LOGOUT_REDIRECT_URL = '/thong-bao/'
