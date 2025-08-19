@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h(k-2ekpilfp(jo#%11mzmq!8a!hh^^9np#!r19a3ua^qc(vmv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['khupho25.pythonanywhere.com']
 
 # Lấy địa chỉ web từ biến môi trường của Render
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
