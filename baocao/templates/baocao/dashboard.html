@@ -74,41 +74,60 @@
         <i class="fa-solid fa-moon"></i>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="/"><strong>KHU PHỐ 25</strong></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="main-navbar">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/thong-bao/">Bảng Tin</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/danh-ba/">Danh Bạ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/bieu-mau/">Biểu Mẫu</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/bao-cao/">Báo Cáo</a></li>
-                    
-                    {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Chào, {{ user.username }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/danh-ba/nhan-khau/">DS Nhân Khẩu</a></li>
-                                <li><a class="dropdown-item" href="/admin/">Trang Quản trị</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Đăng xuất</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: var(--navbar-bg);">
+    <div class="container">
+        <a class="navbar-brand" href="/"><strong>KHU PHỐ 25</strong></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-navbar">
+            <ul class="navbar-nav ms-auto">
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/thong-bao/' %}active{% endif %}" href="/thong-bao/">Bảng Tin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/bieu-mau/' %}active{% endif %}" href="/bieu-mau/">Biểu Mẫu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/bao-cao/' %}active{% endif %}" href="/bao-cao/">Báo Cáo</a>
+                </li>
+                
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if '/danh-ba/' in request.path %}active{% endif %}" href="/danh-ba/">Danh Bạ</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Chào, {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/danh-ba/nhan-khau/">DS Nhân Khẩu</a></li>
+                            <li><a class="dropdown-item" href="/admin/">Trang Quản trị</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form class="d-inline" method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Đăng xuất</button>
+                                </form>
+                            </li>
                             </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="/gop-y/">Gửi Phản Ánh</a></li>
-                        <li class="nav-item"><a class="nav-link btn btn-primary text-white ms-2 px-3" href="{% url 'login' %}">
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gop-y/">Gửi Phản Ánh</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white ms-2 px-3" href="{% url 'login' %}">
                             <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
-                        </a></li>
-                    {% endif %}
-                </ul>
-            </div>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <main class="container my-5">
         <div class="text-center mb-5">
